@@ -791,3 +791,344 @@ MatSci-ML Studio 作为一个强大的基础平台，未来还有广阔的扩展
 
 欢迎使用者通过邮箱1255201958@qq.com反馈使用过程中的bug的所遇到的问题，我会在下面的版本迭代中解决这些问题
 ---
+
+
+---
+
+# **MatSci-ML Studio: An Intelligent Machine Learning Platform for Materials Science**
+
+**Version**: 1.0
+**Last Updated**: 2025.07.08
+
+## ✨ Project Features
+
+*   **Modular Workflow**: Clearly divides the process into multiple stages such as data management, feature engineering, model training, prediction, and optimization, aligning with the logical flow of scientific research.
+*   **Graphical User Interface (GUI)**: All operations can be completed through an intuitive graphical interface, without the need to write complex code.
+*   **Intelligent Wizard**: A built-in intelligent analysis and recommendation system that can automatically assess data quality and recommend suitable preprocessing, feature selection, and model configurations.
+*   **Advanced Optimization Algorithms**: Integrates genetic algorithms, particle swarm optimization, Bayesian optimization, and multi-objective optimization (NSGA-II, MOEA/D, etc.) for inverse design and optimization of target properties.
+*   **Model Interpretability**: Provides model explanation functionality based on SHAP (SHapley Additive exPlanations) to help users understand the model's decision-making process.
+*   **Comprehensive Preprocessing**: Supports advanced outlier detection, smart missing value imputation, data transformation, and feature scaling.
+*   **Collaboration & Version Control**: Built-in project management and version snapshot functionality to facilitate team collaboration and experiment traceability.
+*   **Real-time Performance Monitoring**: Monitors system resource usage and task progress in real-time to ensure a smooth running experience.
+
+---
+
+## 📚 Module Breakdown
+
+This project is composed of the following core modules, each of which can be found in a tab on the main interface:
+
+1.  [**📊 Data Management**](#-module-1-data-management--preprocessing)
+2.  [**🧬 Advanced Preprocessing**](#-module-2-advanced-preprocessing)
+3.  [**🎯 Feature Selection**](#-module-3-feature-engineering--selection)
+4.  [**🔬 Model Training**](#-module-4-model-training--evaluation)
+5.  [**🧠 SHAP Analysis**](#-module-5-shap-model-interpretability-analysis)
+6.  [**🎯 Target Optimization**](#-module-6-target-property-optimization)
+7.  [**🔄 Multi-Objective Optimization**](#-module-7-multi-objective-optimization)
+8.  [**🤖 Active Learning**](#-module-8-active-learning--optimization)
+9.  [**💡 Intelligent Wizard**](#-module-9-intelligent-wizard)
+10. [**⚙️ Performance Monitor**](#-module-10-performance-monitor)
+11. [**🤝 Collaboration**](#-module-11-collaboration--version-control)
+12. [**✅ Model Prediction**](#-module-12-model-prediction--results-export)
+
+---
+
+### 📊 Module 1: Data Management & Preprocessing
+
+This is the starting point of the entire workflow, responsible for data import, exploration, cleaning, and initial preparation.
+
+*   **Core Functions**:
+    *   **Data Import**: Supports importing data from CSV, Excel files, and the system clipboard.
+    *   **Data Exploration**: Provides a data overview (shape, types, missing values) and a table preview.
+    *   **Data Visualization**: Automatically generates a data quality report, including a missing value heatmap, distribution plots, correlation matrix, etc., to help users intuitively understand the data.
+    *   **Data Cleaning**: Provides functions for handling missing values (deletion, mean/median/mode imputation) and removing duplicate rows.
+    *   **Feature/Target Selection**: Users can select feature columns (X) and a target column (y) through the interface.
+    *   **Type Recommendation**: Automatically recommends the task type (classification or regression) based on the characteristics of the target column.
+    *   **Categorical Feature Encoding**: Supports One-Hot Encoding, Label Encoding, etc., for categorical features.
+
+*   **Core Class**: `DataModule(QWidget)`
+
+---
+
+### 🧬 Module 2: Advanced Preprocessing
+
+This module provides a series of advanced data cleaning and transformation tools to improve data quality.
+
+*   **Core Functions**:
+    *   **Smart Recommendation System**: The built-in `SmartRecommendationEngine` can automatically analyze data quality and recommend suitable preprocessing steps.
+    *   **Advanced Outlier Detection**: Integrates various outlier detection algorithms, such as `IQR`, `Z-Score`, `Isolation Forest`, `Local Outlier Factor`, etc., and provides visualization.
+    *   **Smart Missing Value Imputation**: In addition to basic imputation methods, it also supports advanced imputation strategies such as `KNNImputer` and `IterativeImputer`.
+    *   **Data Transformation**: Provides various data scaling and transformation tools like `StandardScaler`, `MinMaxScaler`, `PowerTransformer`, to meet the needs of different models.
+    *   **State Management & History**: `StateManager` and `OperationHistory` implement powerful undo/redo functionality and a detailed operation log, ensuring all preprocessing steps are traceable.
+
+*   **Core Classes**: `AdvancedPreprocessing(QWidget)`, `OutlierDetector`, `SmartImputer`, `StateManager`
+
+---
+
+### 🎯 Module 3: Feature Engineering & Selection
+
+This module focuses on selecting the most valuable subset of features from the original set to improve model performance and reduce the risk of overfitting.
+
+*   **Core Functions**:
+    *   **Multi-Stage Selection Strategy**: Implements a multi-stage feature selection process of "Importance Filtering" -> "Correlation Filtering" -> "Advanced Search".
+    *   **Model-Driven Importance Assessment**: Uses a machine learning model (e.g., Random Forest) to calculate feature importance scores and filters based on them.
+    *   **Correlation Analysis**: Automatically detects and removes highly correlated redundant features, providing a before-and-after comparison of the correlation matrix.
+    *   **Advanced Subset Search**:
+        *   **Sequential Feature Selection (SFS)**: Supports forward and backward greedy search strategies.
+        *   **Genetic Algorithm (GA)**: Searches for the optimal feature combination by simulating the process of biological evolution.
+        *   **Exhaustive Search**: A brute-force search of all possible feature combinations (suitable for a small number of features).
+    *   **Parallel Computing**: Utilizes `ThreadPoolExecutor` and `ProcessPoolExecutor` to accelerate computationally intensive feature evaluation processes.
+
+*   **Core Classes**: `FeatureModule(QWidget)`, `FeatureSelectionWorker(QThread)`
+
+---
+
+### 🔬 Module 4: Model Training & Evaluation
+
+This is the core of the machine learning workflow, responsible for training models with the processed data and comprehensively evaluating their performance.
+
+*   **Core Functions**:
+    *   **Rich Model Library**: Provides a comprehensive library of classification and regression models via `ml_utils`, including linear models, SVMs, tree-based models, ensemble models (Random Forest, Gradient Boosting), neural networks, etc.
+    *   **Automated Preprocessing Pipeline**: Automatically constructs a `sklearn.pipeline.Pipeline` for numeric and categorical features, integrating missing value imputation, scaling, and encoding.
+    *   **Hyperparameter Optimization (HPO)**: Supports various methods like Grid Search, Random Search, and Bayesian Search to automatically find the best parameters for a model.
+    *   **Reliable Performance Evaluation**: Offers multiple evaluation strategies, including single split, multiple random splits, and nested cross-validation, to obtain an unbiased estimate of model performance.
+    *   **Comprehensive Metrics & Visualization**: Automatically calculates and displays various metrics (e.g., R², MSE, Accuracy, F1-Score, ROC AUC) and generates various visualizations like confusion matrices, ROC curves, and residual plots.
+    *   **Model Persistence**: Supports saving the entire trained pipeline (including the preprocessor and model) as a `.joblib` file for reuse in the prediction module.
+
+*   **Core Class**: `TrainingModule(QWidget)`
+
+---
+
+### 🧠 Module 5: SHAP Model Interpretability Analysis
+
+This module utilizes the SHAP (SHapley Additive exPlanations) framework to provide deep, intuitive explanations for trained "black-box" models.
+
+*   **Core Functions**:
+    *   **Automatic Explainer Selection**: Automatically selects the most appropriate SHAP explainer (`TreeExplainer`, `KernelExplainer`, etc.) based on the model type.
+    *   **Global Explanations**:
+        *   **Summary Plot / Beeswarm Plot**: Intuitively displays the overall impact direction and magnitude of each feature on the model's output.
+        *   **Feature Importance**: Clearly displays the average importance ranking of features in a bar chart.
+    *   **Local Explanations**:
+        *   **Waterfall Plot**: Details the prediction for a single sample, showing how each feature pushes the prediction from a baseline value to the final value.
+        *   **Force Plot**: Intuitively shows which features are the main forces pushing or pulling a single sample's prediction.
+    *   **Feature Dependence Plots**: Reveals the effect of a single feature's marginal contribution on the model's output and can automatically discover and visualize interaction effects with other features.
+    *   **Independent Visualization Windows**: Solves compatibility issues between Matplotlib and PyQt by opening all SHAP plots in separate, interactive windows for easy viewing and exporting.
+
+*   **Core Classes**: `SHAPAnalysisModule(QWidget)`, `SHAPCalculationWorker(QThread)`
+
+---
+
+### 🎯 Module 6: Target Property Optimization
+
+This is a powerful inverse design tool used to find the optimal combination of features that achieves a specific target material property.
+
+*   **Core Functions**:
+    *   **Multiple Optimization Algorithms**: Integrates Genetic Algorithm (GA), Particle Swarm Optimization (PSO), and several advanced optimizers from `scipy` and `scikit-optimize` (e.g., Differential Evolution, Bayesian Optimization).
+    *   **Constrained Optimization**: Supports user-defined boundary constraints and linear/non-linear constraints on feature variables.
+    *   **Real-time Visualization**: During the optimization process, it plots convergence curves and parameter space exploration maps in real-time, allowing users to monitor the optimization process.
+    *   **Thread-Safe**: All computationally intensive optimization tasks run in a separate `QThread`, ensuring a smooth and responsive GUI, with support for interruption.
+
+*   **Core Classes**: `TargetOptimizationModule(QWidget)`, `OptimizationWorker(QThread)`
+
+---
+
+### 🔄 Module 7: Multi-Objective Optimization
+
+When it's necessary to optimize multiple conflicting objectives simultaneously (e.g., maximizing both strength and toughness), this module can find a set of "best trade-off" solutions, known as the Pareto Front.
+
+*   **Core Functions**:
+    *   **Powerful Optimization Library**: Based on the `pymoo` library, it supports leading multi-objective optimization algorithms like `NSGA-II`, `NSGA-III`, `SPEA2`, and `MOEA/D`.
+    *   **Mixed-Variable Handling**: Built-in custom sampling (`MixedVariableSampling`) and repair (`EnhancedBoundaryRepair`) operators provide native support for mixed feature types, including continuous, integer, binary, and categorical variables.
+    *   **Robustness and Constraint Handling**: Offers advanced features like robust optimization (`RobustOptimizationHandler`) and explicit constraint handling (`ExplicitConstraintHandler`).
+    *   **Real-time Monitoring & Visualization**: Uses a custom callback (`OptimizationCallback`) to update the Pareto front plot and convergence metrics (like hypervolume) in real-time.
+    *   **Checkpoint Mechanism**: Supports automatically saving checkpoints (`OptimizationCheckpoint`) during the optimization process, allowing for resumption from an interruption.
+
+*   **Core Classes**: `MultiObjectiveOptimizationModule(QWidget)`, `MLProblem(Problem)`
+
+---
+
+### 🤖 Module 8: Active Learning & Optimization
+
+This module combines machine learning with experimental design, guiding the next "most valuable" experiment to run through an intelligent recommendation system, thus finding the optimal solution with the fewest experiments.
+
+*   **Core Functions**:
+    *   **Surrogate Model Library**: Integrates several powerful surrogate models (`RandomForest`, `XGBoost`, `GaussianProcess`, etc.) to learn and predict target properties.
+    *   **Multiple Acquisition Functions**: Supports classic acquisition functions like Expected Improvement (EI) and Upper Confidence Bound (UCB) to balance exploration and exploitation.
+    *   **Candidate Set Generation**: Provides various methods like Latin Hypercube Sampling, Sobol sequence, and Grid Search to generate the candidate experimental space.
+    *   **Iterative Learning**: The entire module is designed around a closed loop of "recommend-feedback-relearn", with the `ActiveLearningSession` class managing the entire iterative process.
+    *   **Comprehensive Process Visualization**: Plots learning curves, feature importance evolution, and exploration-exploitation balance in real-time to help users understand every step of the active learning process.
+
+*   **Core Classes**: `ActiveLearningWindow(QMainWindow)`, `ActiveLearningOptimizer`
+
+---
+
+### 💡 Module 9: Intelligent Wizard
+
+This module acts as the user's smart assistant, providing intelligent configuration recommendations for subsequent preprocessing and modeling steps through automated data analysis.
+
+*   **Core Functions**:
+    *   **Automated Data Analysis**: The `DataAnalysisWorker` thread performs a comprehensive statistical and quality assessment of the data in the background.
+    *   **Multi-Dimensional Quality Assessment**: Evaluates data quality across multiple dimensions, including completeness, uniqueness, validity, consistency, and relevance.
+    *   **Intelligent Recommendations**: Automatically recommends the best missing value handling methods, outlier detection strategies, feature selection techniques, and models based on the analysis results.
+    *   **One-Click Apply**: Users can adopt the wizard's recommended configuration with a single click, which will then be automatically applied to the relevant modules.
+
+*   **Core Classes**: `IntelligentWizard(QWidget)`, `DataAnalysisWorker(QThread)`
+
+---
+
+### ⚙️ Performance Monitor
+
+A real-time monitoring tool for tracking the application's system resource usage and the execution progress of background tasks.
+
+*   **Core Functions**:
+    *   **System Resource Monitoring**: The `SystemMonitorWorker` uses the `psutil` library to monitor CPU, memory, disk, and network usage in real-time.
+    *   **Task Progress Tracking**: The `TaskProgressTracker` can track the progress, duration, and status of long-running tasks (like feature selection and model training).
+    *   **Real-time Charts**: Displays system performance data in real-time updating charts.
+    *   **Performance Alerts**: Issues alerts when CPU or memory usage is too high, reminding the user of potential performance bottlenecks.
+
+*   **Core Classes**: `PerformanceMonitor(QWidget)`, `SystemMonitorWorker(QThread)`
+
+---
+
+### 🤝 Collaboration & Version Control
+
+This module provides basic support for team collaboration and experiment management.
+
+*   **Core Functions**:
+    *   **Project Management**: Supports creating, opening, and deleting projects, each with an independent directory structure for storing data, models, and results.
+    *   **Version Snapshots**: The `VersionControl` class allows users to create a "snapshot" of the project's current state (including data and models) with a descriptive message.
+    *   **History Tracking**: All version snapshots are recorded, allowing users to review and revert to previous experimental states at any time.
+    *   **Project Export**: Supports packaging the entire project into a `.zip` file for easy sharing and migration.
+
+*   **Core Classes**: `CollaborationWidget(QWidget)`, `ProjectManager`, `VersionControl`
+
+---
+
+### ✅ Module 12: Model Prediction & Results Export
+
+This module is used to load a pre-trained model, make predictions on new data, and export the results.
+
+*   **Core Functions**:
+    *   **Model Loading**: Supports loading a model trained in the current session or a persisted model from a `.joblib` file.
+    *   **Detailed Model Information**: Automatically parses and displays detailed metadata about the loaded model, including its type, parameters, feature names, and preprocessing steps.
+    *   **Dual Prediction Modes**:
+        *   **Batch Prediction**: Supports importing batch data from a file or clipboard for prediction.
+        *   **Manual Input**: Automatically generates an input form based on the model's features, allowing users to input feature values for a single sample and get a real-time prediction.
+    *   **Results Export**: Supports exporting the data with prediction results to a CSV or Excel file.
+
+*   **Core Class**: `PredictionModule(QWidget)`
+
+
+---
+
+## 🚀 Recommended Workflow
+
+To fully leverage MatSci-ML Studio, we recommend the following workflow. This process generally aligns with the order of the module tabs in the main interface, designed to guide you seamlessly from data to insight.
+
+1.  **Data Import & Exploration** (in the `Data Management` module)
+    *   **Starting Point**: Begin here. Import your raw dataset using the `Browse` or `From Clipboard` buttons.
+    *   **Explore**: In the right-hand panel, carefully review the "Data Overview" and "Data Quality" tabs to understand your data's basic information, preview its content, and check for missing values and distributions.
+    *   **Initial Cleaning**: Use the "Data Cleaning" section to handle obvious missing values and duplicate data.
+    *   **Define Task**: In the "Feature & Target Selection" section, choose your features (X) and target (y). The system will automatically recommend a task type (classification/regression).
+    *   **Encoding (Optional)**: If your data contains non-numeric categorical features, use the "Categorical Feature Encoding" function to encode them.
+
+2.  **In-depth Data Processing** (in `Advanced Preprocessing` or `Intelligent Wizard` modules)
+    *   **Intelligent Wizard**: If you're unsure how to process your data, switch to the `Intelligent Wizard` module. Run the intelligent analysis, and it will provide a complete set of recommendations for preprocessing and modeling.
+    *   **Manual Advanced Processing**: Alternatively, in the `Advanced Preprocessing` module, you can manually perform more advanced operations, such as detecting and handling outliers with various sophisticated algorithms.
+
+3.  **Feature Selection** (in the `Feature Selection` module)
+    *   **Dimensionality Reduction**: Load the preprocessed data into this module. By configuring a multi-stage feature selection strategy (e.g., importance filtering, correlation filtering, and advanced search), you can eliminate redundant or irrelevant features to improve model performance.
+
+4.  **Model Training** (in the `Model Training` module)
+    *   **Core Step**: Use the selected feature set to train machine learning models.
+    *   **Select Model**: Choose one or more candidate models based on your task type.
+    *   **Hyperparameter Optimization (Optional)**: Enable HPO (Hyperparameter Optimization) to automatically find the best parameter combination for your model.
+    *   **Evaluate**: After training is complete, comprehensively evaluate the model's performance in the right-hand panel's "Metrics," "Confusion Matrix," and other tabs.
+    *   **Save Model**: Once you are satisfied with the results, click `Save Model` to save the entire trained pipeline.
+
+5.  **Model Application & Exploration** (parallel use of multiple modules)
+    *   Once you have a trained model, you can proceed to any of the following modules based on your needs:
+    *   **`Prediction`**: Load the model to predict properties for new, unknown data.
+    *   **`SHAP Analysis`**: Load the model and data to gain deep insights into *why* the model makes its predictions and analyze feature influences.
+    *   **`Target Optimization` / `Multi-Objective Optimization`**: If your goal is "inverse design" (i.e., finding compositions or parameters that produce specific properties), use these modules. Load your model(s), set your optimization targets and constraints, and the algorithms will search for the optimal feature combinations.
+    *   **`Active Learning`**: If your goal is to "guide the next experiment," use this module. It will recommend the most informative "next experiment point" based on the current model, helping you achieve your goal with the fewest experiments.
+
+6.  **Project Management & Monitoring** (throughout the process)
+    *   **`Collaboration`**: At any key stage of your project, you can use this module to create a "snapshot" to version your work for team sharing and reproducibility.
+    *   **`Performance Monitor`**: When performing any computationally intensive task (like training or optimization), you can switch to this module at any time to check system resource usage.
+
+---
+
+### 🛠️ Core Utilities & Helper Modules
+
+This section is primarily for developers who want to understand the project's underlying logic or contribute to its development.
+
+*   **`main_window.py`**
+    *   **Role**: The application's main entry point and framework.
+    *   **Responsibility**: Creates the main window, initializes and contains all functional module tabs (`QTabWidget`), and establishes the signal-slot connections (`connect_modules`) between them, ensuring a smooth flow of data and state between different modules.
+
+*   **`ml_utils.py`**
+    *   **Role**: The "core brain" of machine learning.
+    *   **Responsibility**: Encapsulates all underlying machine learning logic. It defines the platform's supported `sklearn` model library (`get_available_models`), provides default hyperparameter ranges (`get_default_hyperparameters`), and contains core functions for model evaluation and preprocessing pipeline creation.
+
+*   **`data_utils.py` & `plot_utils.py`**
+    *   **Role**: Foundational toolkits for data and visualization.
+    *   **Responsibility**: `data_utils.py` encapsulates all data import and basic quality check functionalities. `plot_utils.py` provides a series of standardized plotting functions to ensure a consistent and reusable visualization style throughout the application.
+
+*   **`feature_name_utils.py` & `prediction_utils.py`**
+    *   **Role**: Feature name mapping and management system.
+    *   **Responsibility**: This is a critical component for handling complex features, especially after one-hot encoding. The `FeatureNameMapper` class is responsible for tracking the mapping between original features and their encoded names. This allows modules like `SHAPAnalysis` and `PredictionModule` to continue using human-readable original feature names, greatly enhancing user experience and the interpretability of results.
+
+*   **`shap_visualization_windows.py`**
+    *   **Role**: An independent rendering solution for SHAP visualizations.
+    *   **Responsibility**: To resolve compatibility issues between `matplotlib` and `PyQt` in certain environments (especially in background threads), this file defines independent `QDialog` windows. When a user needs to view a SHAP plot, the program creates a new, separate window to render and display the image, ensuring the stability and responsiveness of the main interface.
+
+*   **`enhanced_visualizations.py`** (found in `active_learning_optimizer.py`)
+    *   **Role**: A dedicated visualization toolkit for the Active Learning module.
+    *   **Responsibility**: While not a top-level module, it provides the `ActiveLearningWindow` with a variety of advanced visualizations, such as PCA dimensionality reduction analysis, uncertainty analysis, design space slicing, and optimization history, which are key to providing deep insights in the active learning module.
+
+## 🚀 Getting Started
+
+### Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### Launch the Application
+
+```bash
+python main_window.py
+```
+*Note: Depending on your project structure, the entry point might be `main.py`.*
+
+## 🔧 System Requirements
+
+- Python 3.7+
+- PyQt5 5.15.0+
+- Scientific Computing Libraries: NumPy, Pandas, SciPy
+- Machine Learning Libraries: scikit-learn, XGBoost, LightGBM, CatBoost
+- Visualization Libraries: Matplotlib, Seaborn
+- Model Interpretation Library: SHAP
+
+## 📞 Contact
+
+For questions or suggestions, please contact: 1255201958@qq.com
+
+---
+
+## 6. Technical Implementation & Philosophy
+
+-   **Asynchronous Processing**: All time-consuming tasks are executed in `QThread`s, communicating with the main UI thread via signals and slots to ensure a responsive interface.
+-   **Decoupled Data Flow**: Modules are decoupled and pass data through signals, making the workflow flexible and easy to extend.
+-   **Robustness & Error Handling**: Extensive `try...except` blocks and fallback mechanisms ensure application stability.
+-   **Feature Name Management**: A global feature name mapping system solves the common problem of feature names changing after encoding, dramatically improving usability and interpretability.
+
+## 7. Future Work & Contribution
+
+-   **Model Expansion**: Integrate deep learning models, especially Graph Neural Networks (GNNs).
+-   **Database Integration**: Connect to materials databases like Materials Project.
+-   **Reinforcement Learning**: Introduce RL for more intelligent, sequential experimental design.
+-   **Cloud Deployment**: Offload heavy computations to cloud servers.
+
+Contributions are welcome! Please feel free to fork the repository, submit pull requests, or open issues to suggest improvements. Or contact me at 1255201958@qq.com.
+
