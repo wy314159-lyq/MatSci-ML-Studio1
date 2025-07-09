@@ -789,6 +789,24 @@ MatSci-ML Studio 作为一个强大的基础平台，未来还有广阔的扩展
 *   **云端部署**: 将计算密集型任务（如HPO、GA）部署到云端服务器，解放本地计算资源。
 *   **报告自动生成**: 进一步完善报告生成功能，可以一键导出包含所有分析步骤、结果和可视化的PDF或HTML报告。
 
+## 7. 常见问题
+*   ImportError: DLL load failed while importing pyarmor_runtime: 找不到指定的模块。
+*   解决方案：电脑上缺少 Microsoft Visual C++ 运行库 (Microsoft Visual C++ Redistributable)解决方案：安装 Visual C++ 运行库
+前往微软官方下载页面:https://learn.microsoft.com/zh-cn/cpp/windows/latest-supported-vc-redist?view=msvc-170
+最新支持的 Visual C++ Redistributable 下载 | Microsoft Learn
+选择正确的版本下载:
+在页面上找到 "Visual Studio 2015, 2017, 2019 和 2022" 这一节。
+根据您的 Python 解释器 是 64 位还是 32 位来选择下载。
+如果您的系统是 64 位，并且 Python 也是 64 位（现在绝大多数情况都是），请下载 X64 版本。文件名为 VC_redist.x64.exe。
+如果您的 Python 是 32 位，请下载 X86 版本。文件名为 VC_redist.x86.exe。
+如果不确定，安装 X64 版本通常是正确的选择。
+安装并重启:
+下载后，双击运行 .exe 安装程序。
+按照提示完成安装。如果系统提示您重启，请重启电脑以确保所有设置生效。
+再次运行程序:
+安装完成后，回到您的项目目录 (C:\Users\Rain\Desktop\MatSci-ML-Studio1-main\MatSci-ML-Studio1-main)，然后再次尝试运行 main.py。
+python main.py
+请确保使用的时 3.13+以上版本的python
 欢迎使用者通过邮箱1255201958@qq.com反馈使用过程中的bug的所遇到的问题，我会在下面的版本迭代中解决这些问题
 ---
 
