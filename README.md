@@ -303,7 +303,7 @@ python main.py
 
 ## 🔧 系统要求
 
-- Python 3.7+
+- Python 3.12+ 推荐 3.13.5
 - PyQt5 5.15.0+
 - 科学计算库：NumPy、Pandas、SciPy
 - 机器学习库：scikit-learn、XGBoost、LightGBM、CatBoost
@@ -1103,7 +1103,7 @@ python main_window.py
 
 ## 🔧 System Requirements
 
-- Python 3.7+
+- Python 3.12+
 - PyQt5 5.15.0+
 - Scientific Computing Libraries: NumPy, Pandas, SciPy
 - Machine Learning Libraries: scikit-learn, XGBoost, LightGBM, CatBoost
