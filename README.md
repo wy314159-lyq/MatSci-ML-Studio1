@@ -292,7 +292,10 @@
 ```bash
 pip install -r requirements.txt
 ```
-
+- 如果上述按照失败，请手动按照如下命令安装相应的依赖
+```bash
+pip install astor>=0.8.0 pytest>=6.0.0 pytest-qt>=4.0.0 PyQt5>=5.15.0 joblib>=1.1.0 scikit-learn>=1.0.0
+```
 ### 启动应用程序
 
 ```bash
