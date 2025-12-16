@@ -1,4 +1,6 @@
-#  python版本：Python 3.13.5
+#  Python版本：Python 3.13.5
+#  适用于：材料科学机器学习平台 + CGCNN + ALIGNN
+#  详细信息：查看 CGCNN_REQUIREMENTS.txt 了解CGCNN模块的具体要求
 
 
 # Core GUI Framework
@@ -11,17 +13,53 @@ scipy>=1.7.0
 matplotlib>=3.5.0
 seaborn>=0.11.0
 openpyxl
-psutil
+psutil>=5.8.0
+
+# Text and Data Processing
+chardet>=5.0.0
 
 # Machine Learning Libraries
 scikit-learn>=1.0.0
 joblib>=1.1.0
 
+# Advanced Clustering Libraries
+umap-learn>=0.5.0
+hdbscan>=0.8.0
+scikit-learn-extra>=0.2.0
+
 # Model Interpretability
 shap>=0.41.0
 
-# Materials Science Libraries
+# Visualization and Interactive Plotting
+plotly>=5.0.0
+jinja2>=3.0.0
+
+# Optional: Web Engine for Interactive Visualizations (install if needed)
+# PyQtWebEngine>=5.15.0
+
+# Optional: Database Connectors (install if needed)
+# psycopg2-binary>=2.9.0  # PostgreSQL
+# pymysql>=1.0.0          # MySQLpyth
+# sqlalchemy>=1.4.0       # SQL toolkit
+
+# Materials Science Libraries (REQUIRED for CGCNN)
+# pymatgen: 用于晶体结构处理和CIF文件读取 (CGCNN核心依赖)
+# ase: 原子模拟环境，用于晶体结构操作
 xenonpy>=0.6.0
+pymatgen>=2023.1.1                  # CGCNN REQUIRED
+ase>=3.22.0
+
+# Deep Learning Libraries (REQUIRED for CGCNN and ALIGNN)
+# PyTorch: 深度学习框架 (CGCNN和ALIGNN核心依赖)
+# 注意：对于GPU训练，请安装CUDA版本的PyTorch
+# 访问 https://pytorch.org 获取适合您系统的安装命令
+#torch>=1.13.0                        # CGCNN & ALIGNN REQUIRED
+#torch-geometric>=2.3.0               # ALIGNN REQUIRED
+#torch-sparse>=0.6.16                 # ALIGNN REQUIRED
+#torch-scatter>=2.1.0                 # ALIGNN REQUIRED
+
+# Graph Processing Libraries
+networkx>=2.8.0
 
 # Optimization Libraries
 scikit-optimize>=0.9.0
