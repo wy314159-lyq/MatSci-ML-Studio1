@@ -1,7 +1,8 @@
 # MatSci-ML Studio: 智能材料科学机器学习平台
 
-**版本**: 1.0
-**最后更新**: 2025.07.08年
+**版本**: 3.0
+**推荐python版本**: 3.10.x
+**最后更新**: 2025.012.08年
 ## ✨ 项目特色
 
 *   **模块化工作流**: 清晰地划分了数据管理、特征工程、模型训练、预测和优化等多个阶段，符合科研的逻辑流程。
@@ -1152,4 +1153,5 @@ For questions or suggestions, please contact: 1255201958@qq.com
 -   **Cloud Deployment**: Offload heavy computations to cloud servers.
 
 Contributions are welcome! Please feel free to fork the repository, submit pull requests, or open issues to suggest improvements. Or contact me at 1255201958@qq.com.
+
 
