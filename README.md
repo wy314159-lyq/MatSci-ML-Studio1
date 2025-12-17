@@ -1,8 +1,65 @@
-# MatSci-ML Studio: 智能材料科学机器学习平台
-**推荐**: 使用conda创建环境conda create -n py310 python=3.10 -c conda-forge，之后pip install -r requirements 安装依赖。
-**版本**: 3.0
-**推荐python版本**: 3.10.x
-**最后更新**: 2025.012.08年
+# AutoMatFlow (MatSci-ML Studio) - v1
+面向材料科学的图形化机器学习工作流平台（GUI），入口为 `main.py`（会启动 `ui/main_window.py` 的主窗口）。
+
+**运行方式**: `python main.py`
+**建议 Python 版本**: 3.10–3.12（优先 3.12；3.13 取决于 PyQt5/依赖轮子支持情况）
+**依赖说明**: 本仓库当前未提供 `requirements.txt`；安装方式见下方“快速开始”。
+
+## 🚀 快速开始（推荐）
+
+```bash
+# conda（推荐）
+conda create -n automl python=3.10 -c conda-forge
+conda activate automl
+
+# 或 venv（Windows PowerShell）
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+
+# 核心依赖（GUI + 数据处理 + 传统 ML）
+pip install -U pip
+pip install PyQt5 numpy pandas scikit-learn matplotlib seaborn joblib scipy openpyxl xlrd
+
+# 可选功能（按需安装）
+pip install shap psutil xgboost lightgbm catboost pymoo scikit-optimize umap-learn hdbscan
+
+# 可选深度学习模块
+pip install torch pymatgen  # CGCNN
+pip install torch jarvis-tools pydantic pydantic-settings tqdm  # ALIGNN（DGL 安装参考官方 wheel）
+
+# 启动
+python main.py
+```
+
+> 注：README 下方仍保留了一段历史版本的“快速开始”内容，可能包含过时信息；以本节为准。
+
+## ⚠️ 历史内容提示
+
+由于 README 合并过多次版本，文档下半部分仍可能出现以下**已过时**的表述（以本页顶部的“快速开始（推荐）/架构概览/模块列表”为准）：
+
+- **Python 3.13+**：当前更建议使用 **Python 3.10**，以获得更好的依赖兼容性。
+
+- **主动学习 GUI**（如 `active_learning_window.py` / `ActiveLearningWindow`）：当前仓库提供的是**非 GUI** 的主动学习核心算法（`modules/active_learning.py`），尚未接入主界面标签页。
+- **模块清单**：当前主界面额外包含“智能聚类分析”、以及可选的 “ALIGNN/CGCNN” 标签页（依赖缺失时会降级提示）。
+
+## 🧱 架构概览
+
+- **入口**: `main.py` 负责设置路径并调用 `ui/main_window.py:main()` 启动 GUI。
+- **主窗口**: `ui/main_window.py` 负责菜单/标签页初始化，并通过 Qt 信号/槽连接各模块数据流。
+- **业务模块**: `modules/` 下每个模块通常对应一个 `QWidget` 标签页；耗时任务放在 `QThread` 中执行，避免阻塞 UI。
+- **通用工具**: `utils/` 提供数据导入与绘图、模型/预测辅助、特征名映射等跨模块能力。
+
+**模块间数据流（简化）**:
+
+- `DataModule.data_ready` → `IntelligentWizard.set_data` / `AdvancedPreprocessing.set_data` / `FeatureModule.set_data` /（原始数据）`IntelligentClusteringModule`
+- `AdvancedPreprocessing.preprocessing_completed` → `FeatureModule.set_data`
+- `FeatureModule.features_ready` → `TrainingModule.set_data` / `SHAPAnalysisModule.set_data`
+- `TrainingModule.model_ready` → `PredictionModule.set_model` / `SHAPAnalysisModule.set_model` / `TargetOptimizationModule.set_model`
+
+**可选模块降级策略**:
+
+- `modules/alignn` 与 `modules/cgcnn` 在依赖缺失或 DLL 加载失败时，会在主界面显示“Unavailable”占位页，并给出安装提示。
+
 ## ✨ 项目特色
 
 *   **模块化工作流**: 清晰地划分了数据管理、特征工程、模型训练、预测和优化等多个阶段，符合科研的逻辑流程。
@@ -18,20 +75,23 @@
 
 ## 📚 模块详解
 
-本项目由以下核心模块构成，每个模块都可以在主界面的标签页中找到：
+本项目主要由以下模块构成（其中部分为可选功能，缺少依赖时会在界面中提示不可用）：
 
-1.  [**📊 数据管理 (Data Management)**](#-模块一数据管理与预处理)
-2.  [**🧬 高级预处理 (Advanced Preprocessing)**](#-模块二高级数据预处理)
-3.  [**🎯 特征选择 (Feature Selection)**](#-模块三特征工程与选择)
-4.  [**🔬 模型训练 (Model Training)**](#-模块四模型训练与评估)
-5.  [**🧠 SHAP 分析 (SHAP Analysis)**](#-模块五shap-模型可解释性分析)
-6.  [**🎯 目标优化 (Target Optimization)**](#-模块六目标属性优化)
-7.  [**🔄 多目标优化 (Multi-Objective Optimization)**](#-模块七多目标优化)
-8.  [**🤖 主动学习 (Active Learning)**](#-模块八主动学习与优化)
-9.  [**💡 智能向导 (Intelligent Wizard)**](#-模块九智能向导)
-10. [**⚙️ 性能监控 (Performance Monitor)**](#-模块十性能监控)
-11. [**🤝 协作与版本控制 (Collaboration)**](#-模块十一协作与版本控制)
-12. [**✅ 模型预测 (Prediction)**](#-模块十二模型预测与结果导出)
+- 📊 数据管理（Data Management）
+- 💡 智能向导（Intelligent Wizard）
+- 🧬 高级预处理（Advanced Preprocessing）
+- 🎯 特征工程与选择（Feature Selection）
+- 🔬 模型训练与评估（Model Training）
+- ✅ 模型预测与结果导出（Prediction）
+- 🧠 SHAP 模型可解释性分析（SHAP）
+- 🎯 目标属性优化（Target Optimization）
+- 🔄 多目标优化（Multi-Objective Optimization）
+- 🧩 智能聚类分析（Clustering Analysis）
+- ⚙️ 性能监控（Performance Monitor）
+- 🤝 协作与版本控制（Collaboration & Version Control）
+- 🧱 ALIGNN 图神经网络（可选，需 `torch`/`dgl`/`jarvis-tools` 等依赖；见 `modules/alignn/README.md`）
+- 💎 CGCNN 图神经网络（可选，需 `torch`/`pymatgen` 等依赖）
+- 🤖 主动学习核心算法（实验性，当前未接入主界面标签页；见 `modules/active_learning.py`）
 
 ---
 
@@ -149,18 +209,17 @@
 
 ---
 
-### 🤖 模块八：主动学习与优化
+### 🤖 模块八：主动学习（实验性 / 非 GUI）
 
-此模块将机器学习与实验设计相结合，通过智能推荐系统指导下一次“最值得做”的实验，从而以最少的实验次数找到最优解。
+当前仓库提供了一个可复用的主动学习核心算法实现（`modules/active_learning.py` 与 `modules/active_learning/core.py`），用于“推荐-反馈-再学习”的闭环实验设计；它目前**未接入** `ui/main_window.py` 的标签页工作流。
 
-*   **核心功能**:
-    *   **智能体模型库**: 集成了多种强大的代理模型（`RandomForest`, `XGBoost`, `GaussianProcess`等），用于学习和预测目标属性。
-    *   **多种采集函数**: 支持期望提升（Expected Improvement）和置信上界（Upper Confidence Bound）等多种经典的采集函数，以平衡探索（Exploration）和利用（Exploitation）。
-    *   **候选集生成**: 提供拉丁超立方、Sobol序列、网格搜索等多种方法来生成候选实验空间。
-    *   **迭代式学习**: 整个模块围绕“推荐-反馈-再学习”的闭环进行设计，`ActiveLearningSession` 类用于管理整个迭代过程。
-    *   **全面的过程可视化**: 实时绘制学习曲线、特征重要性演化图和探索-利用平衡图，帮助用户理解主动学习的每一步。
+*   **核心能力**:
+    *   **数据存储**: `DataStore` 管理已完成实验的 (X, y)。
+    *   **设计空间**: 通过 `FeatureDimension`/`DesignSpace` 定义特征范围并生成候选点。
+    *   **候选点评分与选择**: 通过采集函数对候选点排序并选择下一批建议实验。
+    *   **迭代编排**: `ActiveLoop` 组织完整的主动学习迭代流程（由二次开发者接入具体实验/仿真接口）。
 
-*   **核心类**: `ActiveLearningWindow(QMainWindow)`, `ActiveLearningOptimizer`
+*   **使用方式**: 作为 Python 模块在脚本/Notebook 中调用（以文件内 docstring 与源码为准）；后续可再接入 GUI 形成完整闭环。
 
 ---
 
@@ -219,7 +278,41 @@
     *   **结果导出**: 支持将带有预测结果的数据导出为 CSV 或 Excel 文件。
 
 *   **核心类**: `PredictionModule(QWidget)`
-### 🚀 推荐工作流 (Recommended Workflow)
+
+---
+
+### 🧩 模块十三：智能聚类分析
+
+该模块提供一个完整的聚类分析工作流（数据审计 → 特征工程 → 多算法聚类 → 评估 → 可视化 → 报告导出），适合用于材料数据的无监督探索。
+
+*   **核心功能**:
+    *   **多算法支持**: K-Means、DBSCAN、Agglomerative、Spectral、BIRCH、MeanShift、GMM、OPTICS 等，并支持可选的 HDBSCAN。
+    *   **实时预览**: 调参时可进行实时预览与评估指标计算。
+    *   **智能推荐**: 根据数据特征推荐算法与关键参数（如 K 值、DBSCAN eps/min_samples）。
+    *   **大数据优化**: 提供面向大规模数据的性能优化与分阶段计算策略。
+
+*   **核心类**: `IntelligentClusteringModule(QWidget)`（见 `modules/clustering/`）
+*   **可选依赖**: `umap-learn`（降维）、`hdbscan`（密度聚类与 DBCV 指标）
+
+---
+
+### 🧱 模块十四：ALIGNN 图神经网络（可选）
+
+ALIGNN（Atomistic Line Graph Neural Network）用于基于晶体结构的性质预测，模块实现与 UI 集成位于 `modules/alignn/`，主窗口在缺少依赖时会自动降级为“Unavailable”提示。
+
+*   **数据格式**: CSV/Excel，包含 `id`、目标列、以及 `atoms` 列（JARVIS Atoms 字典 JSON 形式；详见 `modules/alignn/README.md`）
+*   **关键依赖**: `torch`、`dgl`、`jarvis-tools`（以及 `pydantic`/`tqdm` 等，详见模块 README）
+
+---
+
+### 💎 模块十五：CGCNN 图神经网络（可选）
+
+CGCNN（Crystal Graph Convolutional Neural Networks）用于基于 CIF 晶体结构的性质预测，模块位于 `modules/cgcnn/`，缺少依赖时同样会自动降级提示。
+
+*   **数据格式**: 数据目录包含 `*.cif`、`id_prop.csv`（两列：`cif_id,target`）、`atom_init.json`（元素特征字典）
+*   **关键依赖**: `torch`、`pymatgen`
+
+### 🚀 推荐工作流 (Recommended Workflow) 
 
 为了充分利用 MatSci-ML Studio 的全部功能，我们推荐用户遵循以下工作流程。这个流程与主界面上模块标签页的排列顺序基本一致，旨在引导您从数据到洞见的完整旅程。
 
@@ -291,11 +384,12 @@
 ### 安装依赖
 - 将包导入到python工具当中，例如pycharm等，推荐python版本3.13+
 ```bash
-pip install -r requirements.txt
+pip install PyQt5 numpy pandas scikit-learn matplotlib seaborn joblib scipy openpyxl xlrd
 ```
 - 如果上述按照失败，请手动按照如下命令安装相应的依赖
 ```bash
-pip install astor>=0.8.0 pytest>=6.0.0 pytest-qt>=4.0.0 PyQt5>=5.15.0 joblib>=1.1.0 scikit-learn>=1.0.0
+pip install PyQt5 numpy pandas scikit-learn matplotlib seaborn joblib scipy openpyxl xlrd
+pip install shap psutil xgboost lightgbm catboost pymoo scikit-optimize umap-learn hdbscan
 ```
 ### 启动应用程序
 
@@ -307,7 +401,7 @@ python main.py
 
 ## 🔧 系统要求
 
-- Python 3.12+ 推荐 3.13.5
+- Python 3.10
 - PyQt5 5.15.0+
 - 科学计算库：NumPy、Pandas、SciPy
 - 机器学习库：scikit-learn、XGBoost、LightGBM、CatBoost
@@ -1113,13 +1207,13 @@ This section is primarily for developers who want to understand the project's un
 ### Install Dependencies
 
 ```bash
-pip install -r requirements.txt
+pip install PyQt5 numpy pandas scikit-learn matplotlib seaborn joblib scipy openpyxl xlrd
 ```
 
 ### Launch the Application
 
 ```bash
-python main_window.py
+python main.py
 ```
 *Note: Depending on your project structure, the entry point might be `main.py`.*
 
