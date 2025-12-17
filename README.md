@@ -1,5 +1,5 @@
 # MatSci-ML Studio: 智能材料科学机器学习平台
-
+**推荐**: 使用conda创建环境conda create -n py310 python=3.10 -c conda-forge，之后pip install -r requirements 安装依赖。
 **版本**: 3.0
 **推荐python版本**: 3.10.x
 **最后更新**: 2025.012.08年
@@ -1153,5 +1153,6 @@ For questions or suggestions, please contact: 1255201958@qq.com
 -   **Cloud Deployment**: Offload heavy computations to cloud servers.
 
 Contributions are welcome! Please feel free to fork the repository, submit pull requests, or open issues to suggest improvements. Or contact me at 1255201958@qq.com.
+
 
 
