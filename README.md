@@ -2,8 +2,8 @@
 面向材料科学的图形化机器学习工作流平台（GUI），入口为 `main.py`（会启动 `ui/main_window.py` 的主窗口）。
 
 **运行方式**: `python main.py`
-**建议 Python 版本**: 3.10–3.12（优先 3.12；3.13 取决于 PyQt5/依赖轮子支持情况）
-**依赖说明**: 本仓库当前未提供 `requirements.txt`；安装方式见下方“快速开始”。
+**建议 Python 版本**: 3.10
+
 
 ## 🚀 快速开始（推荐）
 
@@ -11,7 +11,7 @@
 # conda（推荐）
 conda create -n automl python=3.10 -c conda-forge
 conda activate automl
-
+pip install -r requirements
 # 或 venv（Windows PowerShell）
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
@@ -1247,6 +1247,7 @@ For questions or suggestions, please contact: 1255201958@qq.com
 -   **Cloud Deployment**: Offload heavy computations to cloud servers.
 
 Contributions are welcome! Please feel free to fork the repository, submit pull requests, or open issues to suggest improvements. Or contact me at 1255201958@qq.com.
+
 
 
 
